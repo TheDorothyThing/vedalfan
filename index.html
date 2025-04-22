@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>Vedal Fan</title>
+  <link rel="icon" type="image/x-icon" href="VedalFan_favicon.png">
+  <meta property="og:image" content="https://res.cloudinary.com/dqlm6rm3k/image/upload/v1745326421/Vedal_Fan_Preview_Img_cfxrko.png">
+  <meta perperty="og:description" content="Dis the tutel fan">
+  <style>
+    body {
+      text-align: center;
+      background: #E2EDE2;
+      font-family: sans-serif;
+      padding: 50px;
+      display: flex;
+      justify-content: center;
+    }
+
+    #fanStructure {
+      width: 580px;
+      height: 720px;
+      position: relative;
+      background-image: url('fanStructure.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    #vedalFan {
+      width: 580px;
+      height: 580px;
+      transition: transform 0.1s linear;
+    }
+
+    #fanButtons {
+     width: 580px;
+     display: flex;
+     justify-content: center;
+     gap: 0px;
+     margin-top: 20px;
+    }
+
+    .button {
+      width: 64px;
+      height: 64px;
+      margin: 0px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: transform 0.05s linear;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .button:hover {
+      transform: translateY(-4px);
+    }
+
+    .button:active {
+      transform: translateY(20px);
+    }
+
+    .add-speed-btn.active {
+      transform: translateY(20px);
+    }
+
+    .add-speed-btn:hover:not(.active) {
+    transform: translateY(-5px);
+    }
+
+    #fanBottomPart {
+      width: 580px;
+      height: 96px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="fanStructure">
+   <img id="vedalFan" src="VedalFan.png" alt="VedalFan">
+    <div id="fanButtons">
+      <button class="button add-speed-btn" id="slow"   onclick="setSpeed('slow')">
+        <img src="slow-btn.png" width="64" height="64" />
+      </button>
+      <button class="button add-speed-btn" id="medium" onclick="setSpeed('medium')">
+        <img src="medium-btn.png" width="64" height="64" />
+      </button>
+      <button class="button add-speed-btn" id="fast"   onclick="setSpeed('fast')">
+        <img src="fast-btn.png" width="64" height="64" />
+      </button>
+      <button class="button stop-btn" id="stop"   onclick="setSpeed('stop')">
+        <img src="stop-btn.png" width="64" height="64" />
+      </button>
+   </div>
+   <img id="fanBottomPart" src="fanBottomPart.png" alt="fanBottomPart">
+  </div>
+
+  <script>
+    let angle = 0;
+    let speed = 0;
+    let targetSpeed = 0;
+    let animation;
+
+    function updateRotation() {
+      angle += speed;
+      document.getElementById('vedalFan').style.transform = `rotate(${angle}deg)`;
+      // 漸進改變 speed 到 targetSpeed
+      speed += (targetSpeed - speed) * 0.05;
+      animation = requestAnimationFrame(updateRotation);
+    }
+
+    function setSpeed(mode) {
+      document.querySelectorAll('.button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(mode).classList.add('active');
+
+      switch (mode) {
+        case 'slow':
+          targetSpeed = 5;
+          break;
+        case 'medium':
+          targetSpeed = 10;
+          break;
+        case 'fast':
+          targetSpeed = 20;
+          break;
+        case 'stop':
+          targetSpeed = 0;
+          break;
+      }
+
+      if (!animation) {
+        updateRotation();
+      }
+    }
+  </script>
+</body>
+</html>
